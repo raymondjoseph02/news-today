@@ -4,8 +4,10 @@ import RecentArticles from "./components/new-feeds/RecentArticles";
 export default function Home() {
   return (
     <>
-      <Hero />
-      <RecentArticles />
+      <div className="min-h-[calc(100vh-100px)] bg-gray-50">
+        <Hero />
+        <RecentArticles />
+      </div>
     </>
   );
 }

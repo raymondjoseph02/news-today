@@ -12,9 +12,10 @@ function ArticleCard({ title, description, imageUrl, date }: CardProps) {
     <Link href={""} className="space-y-6 group">
       <div className="rounded-lg w-full max-h-58 h-58 bg-gray-500 overflow-hidden">
         <Image
-          src={fallBackImage}
+          src={imageUrl ?? fallBackImage}
           alt={title}
-          width={200}
+          width={600}
+          height={600}
           className="size-full group-hover:scale-105 transition ease-in-out duration-300 "
         />
       </div>

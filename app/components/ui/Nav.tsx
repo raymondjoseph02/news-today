@@ -28,7 +28,7 @@ function Nav() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className="py-4 px-4 sm:px-6 xl:px-20 w-screen fixed top-0 bg-gray-50 border border-b-gray-200 z-50">
+    <header className="py-4 px-4  xl:px-20 w-screen fixed top-0 bg-gray-50 border border-b-gray-200 z-50">
       <div className="flex items-center justify-between  container">
         {/* left logo and links side */}
         <nav className="flex gap-6 xl:gap-12">
@@ -50,7 +50,7 @@ function Nav() {
               <ul className="flex gap-6 xl:gap-10 items-center ">
                 {links.map((link, index) => (
                   <li
-                    key={index}
+                    key={link.path + index}
                     className="text-gray-100 capitalize hover:text-gray-100/80 transition-colors ease-in-out duration-300 text-lg  font-medium"
                   >
                     <Link href={link.path}>{link.name}</Link>
@@ -123,7 +123,10 @@ function Nav() {
             <nav>
               <ul className="space-y-10 p-2.5 mt-12 gap-3">
                 {links.map((link, idx) => (
-                  <li className="relative h-10 " key={idx + link.name}>
+                  <li
+                    className="relative h-10 "
+                    key={idx + link.name + link.path}
+                  >
                     <Link
                       href={link.path}
                       className="text-lg font-medium text-forest-900 hover:text-forest-700   relative bg-white pt-4 pl-4 capitalize w-full  block z-20 h-10 "

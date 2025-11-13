@@ -1,24 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useStore } from "@tanstack/react-store";
 import SearchBar from "../ui/SearchBar";
 import Tab from "../ui/Tab";
+import { activeTab, handleSearch, search, updateActiveTab } from "@/app/store";
+// Subscribe to the store
 
 function Hero() {
   const tabs = ["all", "top stories", "world", "politics", "business", "tech"];
-  const [activeTab, SetActiveTab] = useState("all");
+  const currentTab = useStore(activeTab);
+  const currentSearch = useStore(search);
+
   return (
-    <section className="bg-gray-50 pt-25 pb-10 sm:py-27.5 ">
+    <section className="bg-gray-50 pt-25 pb-10 sm:pt-27.5 sm:pb-16 ">
       <div className="container-wrapper space-y-12">
         <div className="space-y-9">
           <SearchBar
+            value={currentSearch ?? ""}
+            setValue={(val) => handleSearch(val)}
             custom_class="!border-gray-100/20 !border"
             placeHolder="search for news, topics..."
           />
           <div className="hidden sm:flex">
             <Tab
               tabs={tabs}
-              activeTab={activeTab}
-              SetActiveTab={SetActiveTab}
+              activeTab={currentTab}
+              SetActiveTab={(tab) => updateActiveTab(tab)}
             />
           </div>
         </div>

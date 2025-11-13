@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction } from "react";
 interface TabProps {
   tabs: string[];
   activeTab: string;
-  SetActiveTab: Dispatch<SetStateAction<string>>;
+  SetActiveTab: (tab:string)=>void;
 }
 function Tab({ tabs, activeTab, SetActiveTab }: TabProps) {
   return (
@@ -12,7 +11,7 @@ function Tab({ tabs, activeTab, SetActiveTab }: TabProps) {
         const active = activeTab.toLowerCase() === tab.toLowerCase();
         return (
           <li
-            className={`px-4 cursor-pointer py-2 rounded-full relative transition-colors duration-300 ease-in-out delay-150 ${
+            className={`px-4 min-w-18 text-center cursor-pointer py-2 rounded-full relative transition-colors duration-300 ease-in-out delay-150 ${
               active ? "text-white " : "text-gray-100 hover:bg-blue-200"
             } capitalize`}
             key={tab + idx}

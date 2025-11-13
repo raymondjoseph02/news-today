@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 interface SearchProps {
   placeHolder?: string;
   value?: string;
-  setValue?: Dispatch<SetStateAction<string>>;
+  setValue?: (val: string) => void;
   bg_color?: string;
   custom_class?: string;
 }

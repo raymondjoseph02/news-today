@@ -28,7 +28,7 @@ function Nav() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className="py-4 px-4 sm:px-6 xl:px-20 w-screen fixed top-0 bg-gray-50 border border-b-gray-200">
+    <header className="py-4 px-4 sm:px-6 xl:px-20 w-screen fixed top-0 bg-gray-50 border border-b-gray-200 z-50">
       <div className="flex items-center justify-between  container">
         {/* left logo and links side */}
         <nav className="flex gap-6 xl:gap-12">
@@ -115,7 +115,7 @@ function Nav() {
       <AnimatePresence>
         {/* MOBILE MENU PANEL */}
         <div
-          className={`lg:hidden fixed top-0 left-0 h-full w-full bg-white px-6 z-40 transform transition-transform duration-300
+          className={`lg:hidden fixed top-0 left-0 h-full w-full bg-white px-6 z-60 transform transition-transform duration-300
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
         `}
         >

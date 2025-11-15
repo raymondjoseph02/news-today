@@ -1,11 +1,11 @@
 // app/hooks/useNews.ts
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { useAxios } from "@/app/api";
+import { useEffect, useState, useMemo, useTransition } from "react";
 import { useStore } from "@tanstack/react-store";
 import { activeTab, search } from "@/app/store";
 import { debounce } from "@/app/utili/debounce";
+import { fetchNews, NewsParams } from "@/app/lib/news";
 
 // Types
 export type ArticleProps = {
@@ -13,6 +13,8 @@ export type ArticleProps = {
   description: string;
   publishedAt: string;
   urlToImage: string;
+  url: string;
+  category?: string;
 };
 
 export type DataProps = {
@@ -21,52 +23,91 @@ export type DataProps = {
   articles: ArticleProps[];
 };
 
-export function useNews() {
-  const [data, setData] = useState<DataProps | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// Hook for client-side news fetching with initial SSR data
+export function useNews(initialData?: DataProps | null) {
+  const [data, setData] = useState<DataProps | null>(initialData || null);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
-
-  const apiUrl = process.env.NEXT_PUBLIC_NEWS_API_URL; // top-headlines URL
-  const apiKey = process.env.NEXT_PUBLIC_NEWS_API_KEY;
+  const [isPending, startTransition] = useTransition();
 
   const currentTab = useStore(activeTab);
   const currentSearch = useStore(search);
 
-  const category = [
-    "top stories",
-    "politics",
-    "business",
-    "tech",
-    "world",
-    "general",
-  ].includes(currentTab.toLowerCase())
-    ? currentTab.toLowerCase()
-    : "general";
+  // Map tab names to valid API categories
+  const mapTabToCategory = (tabName: string) => {
+    const mapping: { [key: string]: string } = {
+      "all": "general",
+      "top": "general", 
+      "world": "general",
+      "politics": "general", // Politics not supported by API, fallback to general
+      "business": "business",
+      "tech": "technology"
+    };
+    return mapping[tabName.toLowerCase()] || "general";
+  };
+
+  const category = mapTabToCategory(currentTab);
 
   const searchQuery =
-    currentSearch && currentSearch.trim() !== "" ? currentSearch : "";
+    currentSearch && currentSearch.trim() !== "" ? currentSearch.trim() : "";
 
-  const { sendRequest } = useAxios({
-    setIsLoading,
-    setResponse: setData,
-    setErrorMessage: setError,
-  });
+  const fetchNewsData = async (params: NewsParams) => {
+    try {
+      setError(null);
+      setIsLoading(true);
+      const newsData = await fetchNews(params);
+      setData(newsData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch news");
+      console.error("Error fetching news:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const debouncedFetch = useMemo(
     () =>
       debounce(() => {
-        if (!apiUrl || !apiKey) return;
-        const url = `${apiUrl}&category=${category}${
-          searchQuery ? `&q=${searchQuery}` : ""
-        }&apiKey=${apiKey}`;
-        sendRequest({ url, method: "GET" });
+        startTransition(() => {
+          fetchNewsData({
+            category,
+            search: searchQuery,
+            pageSize: 20
+          });
+        });
       }, 900),
-    [apiUrl, apiKey, category, searchQuery, sendRequest]
+    [category, searchQuery]
   );
 
+  const refetch = () => {
+    startTransition(() => {
+      fetchNewsData({
+        category,
+        search: searchQuery,
+        pageSize: 20
+      });
+    });
+  };
+
   useEffect(() => {
+    // Always fetch when category or search changes
     debouncedFetch();
   }, [category, searchQuery, debouncedFetch]);
 
-  return { data, isLoading, error, refetch: debouncedFetch };
+  return { 
+    data, 
+    isLoading: isLoading || isPending, 
+    error, 
+    refetch 
+  };
+}
+
+// Hook for server-side rendering
+export function useNewsSSR(initialData: DataProps) {
+  return {
+    data: initialData,
+    isLoading: false,
+    error: null,
+    refetch: () => {}
+  };
 }

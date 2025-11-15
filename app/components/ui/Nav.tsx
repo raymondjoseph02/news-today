@@ -4,10 +4,8 @@ import { Bell } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useParams } from "next/navigation";
 import SearchBar from "./SearchBar";
 function Nav() {
-  const path = useParams();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const handleToggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -48,9 +46,9 @@ function Nav() {
           <div>
             <div className="hidden lg:flex">
               <ul className="flex gap-6 xl:gap-10 items-center ">
-                {links.map((link, index) => (
+                {links.map((link) => (
                   <li
-                    key={link.path + index}
+                    key={link.path}
                     className="text-gray-100 capitalize hover:text-gray-100/80 transition-colors ease-in-out duration-300 text-lg  font-medium"
                   >
                     <Link href={link.path}>{link.name}</Link>
@@ -82,7 +80,7 @@ function Nav() {
 
         <button
           aria-label="menu button"
-          className="flex flex-col gap-1 items-end justify-center w-7 h-6 relative z-999 lg:hidden"
+          className="flex flex-col gap-1 items-end justify-center w-7 h-6 relative z-50 lg:hidden"
           type="button"
           onClick={handleToggleMenu}
         >
@@ -115,21 +113,21 @@ function Nav() {
       <AnimatePresence>
         {/* MOBILE MENU PANEL */}
         <div
-          className={`lg:hidden fixed top-0 left-0 h-full w-full bg-white px-6 z-60 transform transition-transform duration-300
+          className={`lg:hidden fixed top-0 left-0 h-full w-full bg-white px-6 z-40 transform transition-transform duration-300
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
         `}
         >
-          <div className="space-y-7.5  h-full flex-col flex justify-between pb-6">
+          <div className="space-y-8 h-full flex-col flex justify-between pb-6">
             <nav>
               <ul className="space-y-10 p-2.5 mt-12 gap-3">
-                {links.map((link, idx) => (
+                {links.map((link) => (
                   <li
                     className="relative h-10 "
-                    key={idx + link.name + link.path}
+                    key={`mobile-${link.path}`}
                   >
                     <Link
                       href={link.path}
-                      className="text-lg font-medium text-forest-900 hover:text-forest-700   relative bg-white pt-4 pl-4 capitalize w-full  block z-20 h-10 "
+                      className="text-lg font-medium text-gray-800 hover:text-gray-600 relative bg-white pt-4 pl-4 capitalize w-full block z-20 h-10"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -143,8 +141,8 @@ function Nav() {
             {/* mobile nav footer */}
 
             <div className="">
-              <p className="text-center text-lg font-medium text-gray-100">
-                &copy; 2024 New Today. All right reserved.
+              <p className="text-center text-lg font-medium text-gray-600">
+                &copy; 2024 News Today. All rights reserved.
               </p>
             </div>
           </div>

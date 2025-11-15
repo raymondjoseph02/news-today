@@ -2,7 +2,7 @@ function ArticleSkeleton() {
   return (
     <div className="space-y-6 group animate-pulse">
       {/* Image placeholder */}
-      <div className="rounded-lg w-full max-h-58 h-58 bg-gray-300 overflow-hidden" />
+      <div className="rounded-lg w-full max-h-60 h-60 bg-gray-300 overflow-hidden" />
 
       {/* Text placeholders */}
       <div className="space-y-2.5">

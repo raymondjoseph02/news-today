@@ -11,14 +11,14 @@ export interface TabsProps {
 function Tab({ tabs, activeTab, SetActiveTab }: TabsProps) {
   return (
     <ul className="flex items-center gap-2">
-      {tabs.map((tab, idx) => {
+      {tabs.map((tab) => {
         const active = activeTab.toLowerCase() === tab.name.toLowerCase();
         return (
           <li
-            className={`px-4 min-w-18 text-center cursor-pointer py-2 rounded-full relative transition-colors duration-300 ease-in-out delay-150 ${
+            className={`px-4 min-w-16 text-center cursor-pointer py-2 rounded-full relative transition-colors duration-300 ease-in-out delay-150 ${
               active ? "text-white " : "text-gray-100 hover:bg-blue-200"
             } capitalize`}
-            key={tab.abbreviation + idx}
+            key={tab.abbreviation}
             role="tab"
             onClick={() => SetActiveTab(tab.name)}
           >

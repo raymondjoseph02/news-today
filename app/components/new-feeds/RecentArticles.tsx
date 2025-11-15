@@ -2,17 +2,22 @@
 
 import ArticleCard from "./ArticleCard";
 import ArticleSkeleton from "../ui/skeleton/ArticleSkeleton";
-import { useNews } from "@/app/hooks/useNews";
+import { useNews, DataProps } from "@/app/hooks/useNews";
 
 type ArticleProps = {
   title: string;
   description: string;
   publishedAt: string;
   urlToImage: string;
+  url: string;
 };
 
-function RecentArticles() {
-  const { isLoading, error, data, refetch } = useNews();
+interface RecentArticlesProps {
+  initialData?: DataProps;
+}
+
+function RecentArticles({ initialData }: RecentArticlesProps) {
+  const { isLoading, error, data, refetch } = useNews(initialData);
 
   return (
     <section className="bg-gray-50 pb-10">
@@ -27,7 +32,7 @@ function RecentArticles() {
           {isLoading ? (
             // Loading skeletons
             Array.from({ length: 6 }).map((_, idx) => (
-              <ArticleSkeleton key={idx} />
+              <ArticleSkeleton key={`skeleton-${idx}`} />
             ))
           ) : error ? (
             // Error state
@@ -61,13 +66,14 @@ function RecentArticles() {
             // Articles
             data?.articles
               .slice(1)
-              .map((article: ArticleProps, idx: number) => (
+              .map((article: ArticleProps) => (
                 <ArticleCard
-                  key={idx}
+                  key={`${article.title}-${article.publishedAt}`}
                   title={article.title}
                   description={article.description}
                   date={article.publishedAt}
                   imageUrl={article.urlToImage}
+                  url={article.url}
                 />
               ))
           )}

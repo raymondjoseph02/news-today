@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
         title: "News Today - Latest Headlines",
         description: "Your source for breaking news and latest headlines",
         type: "website",
-        images: latestArticle?.urlToImage ? [latestArticle.urlToImage] : [],
+        images: latestArticle?.image_url ? [latestArticle.image_url] : [],
       },
     };
   } catch {

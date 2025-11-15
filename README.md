@@ -152,7 +152,7 @@ const handleNavigate = () => {
   const articleData = {
     title,
     description,
-    urlToImage,
+    image_url,
     publishedAt,
     url,
   };

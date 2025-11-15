@@ -22,8 +22,8 @@ export async function fetchNews(params: NewsParams = {}): Promise<DataProps> {
     throw new Error("News API configuration missing");
   }
 
-  // Build the API URL
-  let url = `${apiUrl}?country=${country}&pageSize=${pageSize}&apiKey=${apiKey}`;
+  // Build the API URLhttps://api.thenewsapi.com/v1/news/top?api_token=t9wXYTKlsKa2EyXKPb2J4a6BZUB9eC6LZHqvNkBc&locale=us&limit=3
+  let url = `${apiUrl}/all?api_token=${apiKey}&locale=${country}&language=en&page=5`;
 
   // Add category if it's not "all"
   if (category && category !== "all") {
@@ -44,7 +44,7 @@ export async function fetchNews(params: NewsParams = {}): Promise<DataProps> {
 
   // Add search query if provided
   if (search && search.trim() !== "") {
-    url += `&q=${encodeURIComponent(search.trim())}`;
+    url += `&search=${encodeURIComponent(search.trim())}`;
   }
 
   try {
@@ -71,7 +71,7 @@ export async function fetchNews(params: NewsParams = {}): Promise<DataProps> {
     return {
       status: data.status,
       totalResults: data.totalResults || 0,
-      articles: data.articles || [],
+      articles: data.data || [],
     };
   } catch (error) {
     console.error("Error fetching news:", error);

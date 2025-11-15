@@ -36,12 +36,12 @@ function Hero({ initialData }: HeroProps) {
   // Map tab names to valid API categories
   const mapTabToCategory = (tabName: string) => {
     const mapping: { [key: string]: string } = {
-      All: "general",
-      Top: "general",
-      World: "general",
-      Politics: "general", // Politics not supported by API, fallback to general
-      Business: "business",
-      Tech: "technology",
+      all: "general",
+      top: "top stories",
+      world: "world",
+      politics: "politics", // Politics not supported by API, fallback to general
+      business: "business",
+      tech: "technology",
     };
     return mapping[tabName] || "general";
   };
@@ -53,8 +53,8 @@ function Hero({ initialData }: HeroProps) {
     const articleData = {
       title: item.title,
       description: item.description,
-      urlToImage: item.urlToImage,
-      publishedAt: item.publishedAt,
+      image_url: item.image_url,
+      publishedAt: item.published_at,
       url: item.url,
       category: mapTabToCategory(currentTab),
     };
@@ -102,10 +102,10 @@ function Hero({ initialData }: HeroProps) {
             news.articles.slice(0, 1).map((item) => (
               <div
                 style={{
-                  backgroundImage: `url(${item.urlToImage})`,
+                  backgroundImage: `url(${item.image_url})`,
                 }}
                 className="p-6 sm:px-8 sm:py-5 h-80 sm:h-151 md:px-10 md:py-8 bg-gray-400 rounded-xl flex items-start justify-end flex-col bg-cover bg-center relative overflow-hidden"
-                key={`hero-${item.title}-${item.publishedAt}`}
+                key={`hero-${item.title}-${item.published_at}`}
               >
                 <div className="absolute inset-0 bg-black/40 z-10" />
                 <div className="relative z-20">

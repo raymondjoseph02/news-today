@@ -6,7 +6,7 @@ interface RelatedArticleCardProps {
   title: string;
   category: string;
   description: string;
-  thumbNail: string;
+  image_url: string;
   publishedAt?: string;
   url?: string;
 }
@@ -14,7 +14,7 @@ function RelatedArticleCard({
   title,
   description,
   category,
-  thumbNail,
+  image_url,
   publishedAt,
   url,
 }: RelatedArticleCardProps) {
@@ -29,11 +29,11 @@ function RelatedArticleCard({
 
   const handleNavigate = () => {
     const slug = createSlug(title);
-    
+
     const articleData = {
       title,
       description,
-      urlToImage: thumbNail,
+      image_url: image_url,
       publishedAt: publishedAt || new Date().toISOString(),
       url: url || "",
       category: category,
@@ -53,16 +53,16 @@ function RelatedArticleCard({
           <p className="text-sm text-gray-600 line-clamp-2">{description}</p>
         </div>
         <div className="w-20 h-20 shrink-0">
-          <Image 
-            src={thumbNail || fallBackImage} 
-            alt={title} 
+          <Image
+            src={image_url || fallBackImage}
+            alt={title}
             width={80}
             height={80}
             className="w-full h-full object-cover rounded"
           />
         </div>
       </div>
-      <button 
+      <button
         className="text-blue-600 hover:text-blue-800 text-sm font-medium transition"
         onClick={(e) => {
           e.stopPropagation();

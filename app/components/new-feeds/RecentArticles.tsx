@@ -7,8 +7,8 @@ import { useNews, DataProps } from "@/app/hooks/useNews";
 type ArticleProps = {
   title: string;
   description: string;
-  publishedAt: string;
-  urlToImage: string;
+  published_at: string;
+  image_url: string;
   url: string;
 };
 
@@ -68,11 +68,11 @@ function RecentArticles({ initialData }: RecentArticlesProps) {
               .slice(1)
               .map((article: ArticleProps) => (
                 <ArticleCard
-                  key={`${article.title}-${article.publishedAt}`}
+                  key={`${article.title}-${article.published_at}`}
                   title={article.title}
                   description={article.description}
-                  date={article.publishedAt}
-                  imageUrl={article.urlToImage}
+                  date={article.published_at}
+                  imageUrl={article.image_url}
                   url={article.url}
                 />
               ))

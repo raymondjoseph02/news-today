@@ -21,11 +21,19 @@ function Page() {
     async (category: string, currentArticleTitle: string) => {
       try {
         // Ensure we're using a valid API category
-        const validCategories = ["business", "entertainment", "general", "health", "science", "sports", "technology"];
-        const apiCategory = validCategories.includes(category.toLowerCase()) 
-          ? category.toLowerCase() 
+        const validCategories = [
+          "business",
+          "entertainment",
+          "general",
+          "health",
+          "science",
+          "sports",
+          "technology",
+        ];
+        const apiCategory = validCategories.includes(category.toLowerCase())
+          ? category.toLowerCase()
           : "general";
-          
+
         const relatedData = await fetchNews({
           category: apiCategory,
           pageSize: 6,
@@ -162,7 +170,7 @@ function Page() {
             <div className="flex  gap-1 items-center">
               <p className="capitalize">published on </p>
               <time>
-                {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                {new Date(article.published_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -173,10 +181,10 @@ function Page() {
         </header>
 
         {/* Article Image */}
-        {article.urlToImage && (
+        {article.image_url && (
           <div className="mb-8">
             <Image
-              src={article.urlToImage || fallBackImage}
+              src={article.image_url || fallBackImage}
               alt={article.title}
               width={800}
               height={563}
@@ -225,8 +233,8 @@ function Page() {
                   description={
                     relatedArticle.description || "No description available"
                   }
-                  thumbNail={relatedArticle.urlToImage || ""}
-                  publishedAt={relatedArticle.publishedAt}
+                  image_url={relatedArticle.image_url || ""}
+                  publishedAt={relatedArticle.published_at}
                   url={relatedArticle.url}
                 />
               ))

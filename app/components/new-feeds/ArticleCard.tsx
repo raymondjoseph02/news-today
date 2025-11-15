@@ -17,12 +17,12 @@ function ArticleCard({ title, description, imageUrl, date, url }: CardProps) {
   // Map tab names to valid API categories
   const mapTabToCategory = (tabName: string) => {
     const mapping: { [key: string]: string } = {
-      "All": "general",
-      "Top": "general", 
-      "World": "general",
-      "Politics": "general", // Politics not supported by API, fallback to general
-      "Business": "business",
-      "Tech": "technology"
+      All: "general",
+      Top: "general",
+      World: "general",
+      Politics: "general", // Politics not supported by API, fallback to general
+      Business: "business",
+      Tech: "technology",
     };
     return mapping[tabName] || "general";
   };
@@ -42,7 +42,7 @@ function ArticleCard({ title, description, imageUrl, date, url }: CardProps) {
     const articleData = {
       title,
       description,
-      urlToImage: imageUrl,
+      image_url: imageUrl,
       publishedAt: date,
       url,
       category: mapTabToCategory(currentTab),

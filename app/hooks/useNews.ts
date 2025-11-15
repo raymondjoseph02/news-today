@@ -11,8 +11,8 @@ import { fetchNews, NewsParams } from "@/app/lib/news";
 export type ArticleProps = {
   title: string;
   description: string;
-  publishedAt: string;
-  urlToImage: string;
+  published_at: string;
+  image_url: string;
   url: string;
   category?: string;
 };
@@ -32,24 +32,23 @@ export function useNews(initialData?: DataProps | null) {
 
   const currentTab = useStore(activeTab);
   const currentSearch = useStore(search);
+  const searchQuery = currentSearch || "";
 
   // Map tab names to valid API categories
   const mapTabToCategory = (tabName: string) => {
     const mapping: { [key: string]: string } = {
-      "all": "general",
-      "top": "general", 
-      "world": "general",
-      "politics": "general", // Politics not supported by API, fallback to general
-      "business": "business",
-      "tech": "technology"
+      all: "general",
+      top: "top stories",
+      world: "world",
+      politics: "politics", // Politics not supported by API, fallback to general
+      business: "business",
+      tech: "technology",
     };
-    return mapping[tabName.toLowerCase()] || "general";
+    return mapping[tabName.toLowerCase()];
   };
-
   const category = mapTabToCategory(currentTab);
 
-  const searchQuery =
-    currentSearch && currentSearch.trim() !== "" ? currentSearch.trim() : "";
+  console.log(category);
 
   const fetchNewsData = async (params: NewsParams) => {
     try {
@@ -71,8 +70,8 @@ export function useNews(initialData?: DataProps | null) {
         startTransition(() => {
           fetchNewsData({
             category,
-            search: searchQuery,
-            pageSize: 20
+            search: searchQuery || undefined,
+            pageSize: 20,
           });
         });
       }, 900),
@@ -83,8 +82,8 @@ export function useNews(initialData?: DataProps | null) {
     startTransition(() => {
       fetchNewsData({
         category,
-        search: searchQuery,
-        pageSize: 20
+        search: searchQuery || undefined,
+        pageSize: 20,
       });
     });
   };
@@ -94,11 +93,11 @@ export function useNews(initialData?: DataProps | null) {
     debouncedFetch();
   }, [category, searchQuery, debouncedFetch]);
 
-  return { 
-    data, 
-    isLoading: isLoading || isPending, 
-    error, 
-    refetch 
+  return {
+    data,
+    isLoading: isLoading || isPending,
+    error,
+    refetch,
   };
 }
 
@@ -108,6 +107,6 @@ export function useNewsSSR(initialData: DataProps) {
     data: initialData,
     isLoading: false,
     error: null,
-    refetch: () => {}
+    refetch: () => {},
   };
 }

@@ -1,5 +1,5 @@
 // app/loading.tsx
-import ArticleSkeleton from "./components/ui/skeleton/ArticleSkeleton";
+import ArticleSkeleton from "./skeleton/ArticleSkeleton";
 
 export default function Loading() {
   return (
@@ -12,7 +12,7 @@ export default function Loading() {
             <div className="animate-pulse">
               <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
             </div>
-            
+
             {/* Tabs Skeleton */}
             <div className="hidden sm:flex gap-2">
               {Array.from({ length: 6 }).map((_, idx) => (
